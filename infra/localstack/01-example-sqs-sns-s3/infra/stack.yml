@@ -1,0 +1,27 @@
+version: "3.8"
+
+services:
+
+  # Link-Ui: https://app.localstack.cloud/inst/default/resources
+  localstack:
+    container_name: "${LOCALSTACK_DOCKER_NAME-localstack_main}"
+    image: localstack/localstack
+    ports:
+      - "127.0.0.1:4566:4566" # LocalStack Gateway
+    environment:
+      - AWS_DEFAULT_REGION=us-east-1
+      - AWS_ACCESS_KEY_ID=fake
+      - AWS_SECRET_ACCESS_KEY=fake
+      - AWS_DEFAULT_OUTPUT=json
+      - SERVICES=s3,sqs
+      - DEBUG=1
+      - DOCKER_HOST=unix:///var/run/docker.sock
+    volumes:
+      - "${LOCALSTACK_DIR_EX_01}/aws/config/init.sh:/etc/localstack/init/ready.d/init.sh"  # ready hook
+      - "${LOCALSTACK_DIR_EX_01}/aws/config/sqs-s3-notification.json:/opt/code/localstack/sqs-s3-notification.json"
+      - "${LOCALSTACK_DIR_EX_01}/aws/volume-localstack-temp:/var/lib/localstack"
+      - "/var/run/docker.sock:/var/run/docker.sock"
+
+#networks:
+#  localstack_network:
+#    driver: bridge

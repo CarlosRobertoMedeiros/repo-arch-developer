@@ -1,0 +1,9 @@
+server:
+  port: 8001
+  servlet:
+    context-path: /service-load-database
+
+spring:
+  profiles:
+    default: local
+    active: local

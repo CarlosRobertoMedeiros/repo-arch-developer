@@ -1,0 +1,127 @@
+{
+	"info": {
+		"_postman_id": "15674f77-c08e-40df-9619-e9ebc5681ac3",
+		"name": "LocalStack",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "10652348"
+	},
+	"item": [
+		{
+			"name": "Bucket-S3",
+			"item": [
+				{
+					"name": "ListAllBuckets",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://127.0.0.1:4566/",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "4566",
+							"path": [
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "ListItensInsideBucket",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://127.0.0.1:4566/my-bucket-local",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "4566",
+							"path": [
+								"my-bucket-local"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "PutFileInsideBucket",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "x-amz-acl",
+								"value": "public-read",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "file",
+							"file": {
+								"src": "/C:/Desenvolvimento/sistemas/arch-developer/infra/localstack/01-example-sqs-sns-s3/infra/aws/fileToPutInS3/exemplo.csv"
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:4566/my-bucket-local/project/receive/exemplo.csv",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "4566",
+							"path": [
+								"my-bucket-local",
+								"project",
+								"receive",
+								"exemplo.csv"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DeleteFileInsideBucket",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "x-amz-acl",
+								"value": "public-read",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://127.0.0.1:4566/my-bucket-local/project/receive/exemplo.csv",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "4566",
+							"path": [
+								"my-bucket-local",
+								"project",
+								"receive",
+								"exemplo.csv"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
