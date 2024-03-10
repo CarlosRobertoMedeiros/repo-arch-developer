@@ -8,6 +8,8 @@ services:
     image: localstack/localstack
     ports:
       - "127.0.0.1:4566:4566" # LocalStack Gateway
+    networks: 
+      - localstack_network
     environment:
       - AWS_DEFAULT_REGION=us-east-1
       - AWS_ACCESS_KEY_ID=fake
@@ -22,6 +24,6 @@ services:
       - "${LOCALSTACK_DIR_EX_01}/aws/volume-localstack-temp:/var/lib/localstack"
       - "/var/run/docker.sock:/var/run/docker.sock"
 
-#networks:
-#  localstack_network:
-#    driver: bridge
+networks:
+  localstack_network:
+    driver: bridge
