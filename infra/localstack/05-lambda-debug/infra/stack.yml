@@ -1,0 +1,60 @@
+version: "3.9"
+
+x-env-variables: &env
+  BASE_DIR: "${PWD}"
+ 
+services:
+  localstack:
+    container_name: "${LOCALSTACK_DOCKER_NAME:-localstack_main}"
+    image: localstack/localstack:latest
+    ports:
+      - "4566:4566"   # Porta principal (Gateway)
+      - "8080:8080"   # Interface UI url: https://app.localstack.cloud/inst/default/resources/
+      # - "4571:4571" # Lambda Executor
+    networks:
+      - localstack_network
+    environment:
+      # Credenciais e região padrão fake
+      - AWS_DEFAULT_REGION=us-east-1
+      - AWS_ACCESS_KEY_ID=test
+      - AWS_SECRET_ACCESS_KEY=test
+      - AWS_DEFAULT_OUTPUT=json
+
+      # Serviços a habilitar
+      - SERVICES=s3,sqs,lambda,dynamodb,logs  # ativa Lambda e CloudWatch Logs
+
+      # Ativa Web UI
+      - LOCALSTACK_WEB=1
+
+      # Reduz logs verbosos desnecessários
+      - DEBUG=1
+      - LS_LOG=info,error,warning
+
+      # Permite acesso ao Docker do host
+      - DOCKER_HOST=unix:///var/run/docker.sock
+
+      # Modo pro: remove necessidade de login, mas compatível com plano free
+      - LOCALSTACK_AUTH_TOKEN=${LOCALSTACK_AUTH_TOKEN:-}
+
+      #Ativa Debug remoto
+      - LAMBDA_REMOTE_DEBUG_PORT=9229  # Ativa debug remoto
+
+    volumes:
+      # Scripts de inicialização (executam após o container estar pronto)
+      - "${BASE_DIR}/infra/aws/config/init.sh:/etc/localstack/init/ready.d/init.sh"
+
+      # Persistência do LocalStack
+      - "${BASE_DIR}/infra/aws/volume-localstack-temp:/var/lib/localstack"
+      
+      # Código-fonte local (lambda)
+      - "${BASE_DIR}/lambda/src:/opt/code/lambda"
+
+      # Arquivo JSON adicional (não sobrescrevendo localstack interno)
+      - "${BASE_DIR}/infra/aws/config/sqs-s3-notification.json:/opt/code/config/sqs-s3-notification.json"
+
+      # Da acesso ao Docker do host dentro do container.
+      - "/var/run/docker.sock:/var/run/docker.sock"   # <--- ESSENCIAL
+
+networks:
+  localstack_network:
+    driver: bridge

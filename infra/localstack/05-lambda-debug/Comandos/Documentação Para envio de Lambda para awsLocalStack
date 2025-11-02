@@ -1,0 +1,82 @@
+1 - Criar a função
+
+
+Zipar o arquivo para enviar a Lambda
+    zip -r lambda_js_localstack.zip .
+
+Verifica arquivo Zipado
+    unzip -l lambda_js_localstack.zip
+
+Os arquivos que devem ter são o index.js e o package.json
+
+aws lambda create-function \
+    --function-name HelloLambdaJS \
+    --runtime nodejs18.x \
+    --handler index.handler \
+    --zip-file fileb://lambda_js_localstack.zip \
+    --role arn:aws:iam::000000000000:role/lambda-role \
+    --endpoint-url $ENDPOINT_URL \
+    --output json
+
+aws lambda delete-function \
+    --function-name HelloLambdaJS \
+    --endpoint-url http://localhost:4566 \
+    --output json
+
+aws lambda update-function-code \
+    --function-name MyLambda \
+    --zip-file fileb://lambda_js_localstack.zip \
+    --endpoint-url http://localhost:4566 \
+    --output json
+
+2 - Verificar se a Lambda foi Criada
+
+aws lambda list-functions \
+    --endpoint-url http://localhost:4566 \
+    --output json
+
+
+3 - Invocar a Lambda
+
+aws lambda invoke \
+    --function-name HelloLambdaJS \
+    --payload '{"param1":"Ola","param2":"Mundo"}' \
+    response.json \
+    --cli-binary-format raw-in-base64-out \
+    --endpoint-url http://localhost:4566 \
+    --output json
+
+#Não esqueça depois da geração que tem que ver o resultado
+cat response.json
+
+4 - Criando o log group
+aws --endpoint-url=http://localhost:4566 logs create-log-group \
+    --log-group-name /aws/lambda/HelloLambdaJS \
+    --output json
+
+
+Detalhes de um curso simples
+
+Dicas para função Lambda
+
+Para zipar o arquivo a partir da minha máquina
+  zip lambda.zip *.mjs
+
+Para exportar funções lambda para a AWS
+  aws lambda update-function-code --function-name nomeFuncaoLambda --zip-file fileb://lambda.zip
+
+
+
+Aprendendo o Fazer atualização de lambda com gitHub Actions
+    No marketplace do GitHub, usei o AWS Lambda Deploy (https://github.com/marketplace/actions/aws-lambda-deploy)
+
+Ambiente e URLs de função
+    Variaveis de ambiente Lambda, verificar na documentacao
+
+AWS Serverless Application Model
+    Serverless Framework => Get Started Node / Get Started Java
+
+Continuar no curso de ApiGateway
+Amanhã de Manhã, vou pedir o café pra nós dois
+O que é lambda
+

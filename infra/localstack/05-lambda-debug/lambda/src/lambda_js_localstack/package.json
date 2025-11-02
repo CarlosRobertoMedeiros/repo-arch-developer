@@ -1,0 +1,11 @@
+
+{
+  "name": "lambda_js_localstack",
+  "version": "1.0.0",
+  "description": "Lambda JS para LocalStack",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {}
+}

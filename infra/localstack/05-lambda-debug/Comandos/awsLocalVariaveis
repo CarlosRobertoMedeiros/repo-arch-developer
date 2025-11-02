@@ -1,0 +1,14 @@
+# Para simular AWSLOCALMENTE
+#!/bin/bash
+
+# Credenciais (LocalStack aceita qualquer valor)
+export AWS_ACCESS_KEY_ID=test
+export AWS_SECRET_ACCESS_KEY=test
+export AWS_DEFAULT_REGION=us-east-1
+
+# Endpoint do LocalStack
+export LOCALSTACK_HOST=localhost
+export LOCALSTACK_PORT=4566
+
+# Endpoint completo
+export ENDPOINT_URL=http://$LOCALSTACK_HOST:$LOCALSTACK_PORT
